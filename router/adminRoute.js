@@ -30,6 +30,13 @@ admin_route.get('/home',auth.isLogin, auth.cookieCheck, adminController.loadDash
 admin_route.get('/logout', auth.isLogin, adminController.logout);
 admin_route.post('/logout', adminController.logout);
 
+admin_route.post('/search',auth.isLogin, auth.cookieCheck, adminController.searchUser);
+
+admin_route.post('/edit',auth.isLogin, auth.cookieCheck, adminController.editUser);
+
+admin_route.post('/deleteUser',auth.isLogin, auth.cookieCheck, adminController.deleteUser);
+
+
 admin_route.get('*',(req,res)=>{ res.redirect('/admin')})
 
 

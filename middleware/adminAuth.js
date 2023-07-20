@@ -34,6 +34,8 @@ const cookieCheck = async (req,res,next)=>{
     }
 }
 
+
+
 module.exports = {
     isLogin,
     isLogout,
