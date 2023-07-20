@@ -1,0 +1,37 @@
+<%- include('../layouts/header') %>
+
+<header>
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <div class="d-flex">
+                <img class="pb-2" style="width: 3em;"
+                    src="https://icon-library.com/images/e-commerce-icon-png/e-commerce-icon-png-5.jpg"></img>
+                <h3 class="p-2 fw-bold text-danger">eezi<span class="text-success">Buy</span></h3>
+            
+            </div>
+            <a class="navbar-brand ps-4 fw-bold">HOME PAGE</a>
+            <form class="d-flex" action="/logout" method="post">
+                <button type="submit" class="btn btn-danger w-100">Logout</button>
+            </form>
+        </div>
+    </nav>
+</header>
+<div class="container-fluid" style="background-color: rgb(208,236,248);">
+    <div class="row text-center">
+        <div class="col-md-6">
+            <img class="w-75 "
+                src="https://static.vecteezy.com/system/resources/previews/001/950/076/original/online-shopping-concept-smartphone-online-store-free-vector.jpg"></img>
+        </div>
+        <div class="col-md-6 p-4">
+            <h3 class="pt-4 ">Welcome <%=locals.username? locals.username :'User' %></h3>
+            <hr>
+            <h3 class="pt-4">Site is under construction</h3>
+            <p class="pt-4"> Please press Log out button in the navigation bar to Log out of
+                the page safely</p>
+                <img class="w-50 "
+                src="https://static.vecteezy.com/system/resources/previews/008/501/405/original/under-construction-barrier-clip-art-free-png.png"></img>
+        </div>
+    </div>
+</div>
+
+<%- include('../layouts/footer') %>
