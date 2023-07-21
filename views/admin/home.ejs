@@ -17,7 +17,15 @@
         </nav>
     </header>
 
+    <!-- alert -->
+    <% if(locals.alert){%> 
+        <div class="alert alert-warning text-center mb-0">
+            <%=locals.alert%>
+        </div>
+        <% } %>
+
     <div class="container-fluid" style="background-color: rgb(208,236,248);">
+ 
         <div class="row text-center">
             <div class="col-md-6">
                 <img class="w-75 "
@@ -46,17 +54,23 @@
                         <hr>
                 </div>
 
-                <div class="d-flex ">
+                <div class="d-flex p-1 " style="border-radius: 2em; background-color: rgb(138,184,225)">
+                   
                     <div class="text-start col-md-6 pe-3">
-                        <%- include('editUser') %>
+                        <h3 class="text-center fw-bold pt-3 pb-2">User Management</h3>
+                        <%- include('createUser') %>
                     </div>
                     <div class="text-start col-md-6">
 
                         <%- include('deleteUser') %>
+                        <%- include('editUser') %>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    
+   
 
     <%- include('../layouts/footer') %>

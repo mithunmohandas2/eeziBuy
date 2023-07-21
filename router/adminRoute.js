@@ -32,10 +32,11 @@ admin_route.post('/logout', adminController.logout);
 
 admin_route.post('/search',auth.isLogin, auth.cookieCheck, adminController.searchUser);
 
-admin_route.post('/edit',auth.isLogin, auth.cookieCheck, adminController.editUser);
+admin_route.post('/edit',auth.isLogin, auth.cookieCheck, adminController.editUser); // create user
 
 admin_route.post('/deleteUser',auth.isLogin, auth.cookieCheck, adminController.deleteUser);
 
+admin_route.post('/modifyUser',auth.isLogin, auth.cookieCheck, adminController.modifyUser);  //edit user | modify
 
 admin_route.get('*',(req,res)=>{ res.redirect('/admin')})
 

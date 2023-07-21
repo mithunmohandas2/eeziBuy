@@ -35,7 +35,7 @@ const loadDashboard = async (req, res) => {
     try {
         const all_users = await User.find()
         // console.log(all_users)
-        res.render('home', { username: req.session.user_name, users: all_users });
+        res.render('home', { username: req.session.user_name, users: all_users, alert:req.query.alert });
     } catch (error) {
         console.log(error.message)
     }
@@ -78,50 +78,81 @@ const searchUser = async (req, res) => {
 }
 
 const editUser = async (req, res) => {
-        // check password and confirm password is same
-        if (req.body.password != req.body.password2) {
-            console.log("password mismatch")
-            res.redirect('/admin/home')   // popup
-        } else {
-    
-            try {
-                // if email or password exist in database
-                const emailMatch = await User.findOne({ email: req.body.email })
-                const phoneMatch = await User.findOne({ phone: req.body.phone })
-                if (emailMatch || phoneMatch) {
-                    console.log("Existing user in database")
-                    res.redirect('/admin/home')   // popup
-    
-                } else { // if details not in database
-    
-                    const user = new User({
-                        name: req.body.name,
-                        email: req.body.email,
-                        phone: req.body.phone,
-                        password: req.body.password,
-                        admin_status: req.body.admin_status
-                    })
-    
-                    const userData = await user.save();
-                    console.log(userData)
-                    if (userData) {  // adding to database success?
-                        res.redirect('/admin/home')   // popup success
-                    } else {
-                        res.redirect('/admin/home')   // popup failed
-                    }
+    // check password and confirm password is same
+    if (req.body.password != req.body.password2) {
+        console.log("password mismatch")
+        res.redirect('/admin/home')   // popup
+    } else {
+
+        try {
+            // if email or password exist in database
+            const emailMatch = await User.findOne({ email: req.body.email })
+            const phoneMatch = await User.findOne({ phone: req.body.phone })
+            if (emailMatch || phoneMatch) {
+                console.log("Existing user in database")
+                res.redirect('/admin/home')   // popup
+
+            } else { // if details not in database
+
+                const user = new User({
+                    name: req.body.name,
+                    email: req.body.email,
+                    phone: req.body.phone,
+                    password: "password",
+                    admin_status: req.body.admin_status
+                })
+
+                const userData = await user.save();
+                // console.log(userData)
+                if (userData) {  // adding to database success?
+                    res.redirect('/admin/home?alert=User created successfully ')   // popup success
+                } else {
+                    res.redirect('/admin/home?alert=Unable to create user')   // popup failed
                 }
-            } catch (error) {
-                console.log(error.message)
             }
+        } catch (error) {
+            console.log(error.message)
         }
     }
+}
 
-   const deleteUser = async (req, res) => {
+const deleteUser = async (req, res) => {
 
     try {
-        if(req.body.phone) await User.deleteOne({phone: req.body.phone})
-        else await User.deleteOne({email: req.body.email})
-        res.redirect("/admin")
+        if (req.body.phone) await User.deleteOne({ phone: req.body.phone })
+        else await User.deleteOne({ email: req.body.email })
+        res.redirect("/admin?alert=User deleted successfully")
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+const modifyUser = async (req, res) => {
+
+    try {
+        const emailMatch = await User.findOne({ email: req.body.email })
+        const phoneMatch = await User.findOne({ phone: req.body.phone })
+        if (!emailMatch) {
+            console.log("User records not found")
+            res.redirect('/admin/home?alert=email not found in database')     // popup with email not found
+           
+
+        } else { // if email present in database
+            const userData = await User.updateOne({ email: req.body.email }, {
+                $set: {
+                    name: req.body.name,
+                    email: req.body.email,
+                    phone: req.body.phone,
+                    admin_status: req.body.admin_status
+                }
+            });
+            console.log(userData)
+            if (userData) {  // adding to database success?
+                res.redirect('/admin/home?alert=User data modified successfully')   // popup success
+            } else {
+                res.redirect('/admin/home?alert=Unable to modify user data')   // popup failed
+            }
+        }
     } catch (error) {
         console.log(error.message)
     }
@@ -135,5 +166,6 @@ module.exports = {
     logout,
     searchUser,
     editUser,
-    deleteUser
+    deleteUser,
+    modifyUser
 }
